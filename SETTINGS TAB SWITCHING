@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>eGov Settings & Tracking</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 p-10">
+
+<!-- ================= SETTINGS SECTION ================= -->
+<div class="bg-white p-6 rounded shadow mb-10">
+    <h2 class="text-2xl font-bold mb-6">Settings</h2>
+
+    <!-- Tab Buttons -->
+    <div class="flex gap-6 border-b mb-6">
+        <button class="settings-tab border-b-2 border-blue-600 text-blue-600 pb-2"
+            data-tab="profile"
+            onclick="switchSettingsTab('profile')">
+            Profile
+        </button>
+
+        <button class="settings-tab border-b-2 border-transparent text-gray-600 pb-2"
+            data-tab="security"
+            onclick="switchSettingsTab('security')">
+            Security
+        </button>
+
+        <button class="settings-tab border-b-2 border-transparent text-gray-600 pb-2"
+            data-tab="notifications"
+            onclick="switchSettingsTab('notifications')">
+            Notifications
+        </button>
+
+        <button class="settings-tab border-b-2 border-transparent text-gray-600 pb-2"
+            data-tab="linked"
+            onclick="switchSettingsTab('linked')">
+            Linked Accounts
+        </button>
+    </div>
+
+    <!-- Tabs Content -->
+
+    <div id="profile-tab">
+        <h3 class="text-lg font-semibold">Profile Settings</h3>
+        <p>Update your name, email, and personal details.</p>
+    </div>
+
+    <div id="security-tab" class="hidden">
+        <h3 class="text-lg font-semibold">Security Settings</h3>
+        <p>Change password and enable 2FA.</p>
+    </div>
+
+    <div id="notifications-tab" class="hidden">
+        <h3 class="text-lg font-semibold">Notification Settings</h3>
+        <p>Manage email and SMS notifications.</p>
+    </div>
+
+    <div id="linked-tab" class="hidden">
+        <h3 class="text-lg font-semibold">Linked Accounts</h3>
+        <p>Connect external government services.</p>
+    </div>
+</div>
+
+
+<!-- ================= TRACKING SECTION ================= -->
+<div class="bg-white p-6 rounded shadow">
+    <h2 class="text-2xl font-bold mb-6">Application Tracking</h2>
+
+    <!-- Search -->
+    <input type="text"
+        id="tracking-search"
+        onkeyup="filterTrackingApplications()"
+        placeholder="Search by Application ID or Service..."
+        class="border p-2 w-full mb-6">
+
+    <!-- Applications -->
+    <div class="tracking-app border p-4 mb-3 rounded bg-gray-50"
+        data-app-id="APP001"
+        data-service-name="Birth Certificate">
+        <p><strong>ID:</strong> APP001</p>
+        <p><strong>Service:</strong> Birth Certificate</p>
+        <p>Status: Processing</p>
+    </div>
+
+    <div class="tracking-app border p-4 mb-3 rounded bg-gray-50"
+        data-app-id="APP002"
+        data-service-name="Business Permit">
+        <p><strong>ID:</strong> APP002</p>
+        <p><strong>Service:</strong> Business Permit</p>
+        <p>Status: Approved</p>
+    </div>
+
+    <!-- No Results Message -->
+    <div id="tracking-no-results" class="hidden text-red-600 font-semibold">
+        No applications found.
+    </div>
+</div>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+<script>
+
+    // Settings Tab Switching
+    function switchSettingsTab(tabName) {
+
+        document.getElementById('profile-tab').classList.add('hidden');
+        document.getElementById('security-tab').classList.add('hidden');
+        document.getElementById('notifications-tab').classList.add('hidden');
+        document.getElementById('linked-tab').classList.add('hidden');
+
+        document.querySelectorAll('.settings-tab').forEach(btn => {
+            btn.classList.remove('active', 'border-blue-600', 'text-blue-600');
+            btn.classList.add('border-transparent', 'text-gray-600');
+        });
+
+        const tabElement = document.getElementById(tabName + '-tab');
+        if (tabElement) {
+            tabElement.classList.remove('hidden');
+        }
+
+        const activeTab = document.querySelector(`[data-tab="${tabName}"]`);
+        if (activeTab) {
+            activeTab.classList.add('border-blue-600', 'text-blue-600');
+            activeTab.classList.remove('border-transparent', 'text-gray-600');
+        }
+    }
+
+
+    // Tracking Page Filter
+    function filterTrackingApplications() {
+        const searchQuery = document.getElementById('tracking-search').value.toLowerCase();
+        const trackingApps = document.querySelectorAll('.tracking-app');
+        let visibleCount = 0;
+
+        trackingApps.forEach(app => {
+            const appId = app.getAttribute('data-app-id').toLowerCase();
+            const serviceName = app.getAttribute('data-service-name').toLowerCase();
+
+            if (appId.includes(searchQuery) || serviceName.includes(searchQuery)) {
+                app.classList.remove('hidden');
+                app.style.display = '';
+                visibleCount++;
+            } else {
+                app.classList.add('hidden');
+                app.style.display = 'none';
+            }
+        });
+
+        const noResults = document.getElementById('tracking-no-results');
+        if (visibleCount === 0 && searchQuery) {
+            noResults.classList.remove('hidden');
+        } else {
+            noResults.classList.add('hidden');
+        }
+    }
+
+</script>
+
+</body>
+</html>
