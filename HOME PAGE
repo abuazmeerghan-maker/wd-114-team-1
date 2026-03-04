@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>eGov Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+
+    <!-- HOME PAGE -->
+    <div id="home-page" class="p-10">
+        <h1 class="text-3xl font-bold mb-4">Welcome to eGov Portal</h1>
+        <button onclick="togglePage('services')" 
+            class="bg-blue-600 text-white px-4 py-2 rounded">
+            View Services
+        </button>
+    </div>
+
+    <!-- SERVICES PAGE -->
+    <div id="services-page" class="hidden p-10">
+        <h2 class="text-2xl font-bold mb-4">Services</h2>
+
+        <!-- Search & Filter -->
+        <input type="text" id="service-search" placeholder="Search service..."
+            onkeyup="filterServices()" 
+            class="border p-2 mb-3 w-full">
+
+        <select id="price-filter" onchange="filterServices()" 
+            class="border p-2 mb-5 w-full">
+            <option value="all">All</option>
+            <option value="free">Free</option>
+            <option value="paid">Paid</option>
+        </select>
+
+        <!-- Service Cards -->
+        <div class="service-card border p-4 mb-3 bg-white"
+            data-name="Birth Certificate"
+            data-price="500">
+            <h3 class="font-bold">Birth Certificate</h3>
+            <p>Fee: ₱500</p>
+            <button onclick="startApplication('BC','Birth Certificate',500)"
+                class="bg-green-600 text-white px-3 py-1 rounded mt-2">
+                Apply
+            </button>
+        </div>
+
+        <div class="service-card border p-4 mb-3 bg-white"
+            data-name="Barangay Clearance"
+            data-price="0">
+            <h3 class="font-bold">Barangay Clearance</h3>
+            <p>Free</p>
+            <button onclick="startApplication('BRG','Barangay Clearance',0)"
+                class="bg-green-600 text-white px-3 py-1 rounded mt-2">
+                Apply
+            </button>
+        </div>
+
+        <button onclick="togglePage('home')" 
+            class="mt-5 bg-gray-600 text-white px-4 py-2 rounded">
+            Back to Home
+        </button>
+    </div>
+
+    <!-- APPLICATION PAGE -->
+    <div id="application-page" class="hidden p-10">
+        <h2 id="app-service-name" class="text-2xl font-bold mb-4"></h2>
+
+        <div class="bg-white p-4 rounded shadow">
+            <p><strong>Service:</strong> <span id="review-service"></span></p>
+            <p><strong>Fee:</strong> <span id="review-fee"></span></p>
+        </div>
+
+        <button onclick="togglePage('services')" 
+            class="mt-5 bg-gray-600 text-white px-4 py-2 rounded">
+            Back to Services
+        </button>
+    </div>
+
+
+<script>
+    // Page Management
+    let currentApplicationStep = 1;
+    let uploadedFileName = null;
+    const steps = ['Personal Info', 'Documents', 'Review', 'Submit'];
+
+    function togglePage(page) {
+        const pages = [
+            'home-page',
+            'services-page',
+            'application-page'
+        ];
+
+        pages.forEach(id => {
+            document.getElementById(id)?.classList.add('hidden');
+        });
+
+        if (page === 'home') {
+            document.getElementById('home-page').classList.remove('hidden');
+        }
+        if (page === 'services') {
+            document.getElementById('services-page').classList.remove('hidden');
+        }
+        if (page === 'application') {
+            document.getElementById('application-page').classList.remove('hidden');
+        }
+    }
+
+    // Application Page Functions
+    function initializeApplication(serviceId = 'BC', serviceName = 'Birth Certificate', fee = 500) {
+        currentApplicationStep = 1;
+        uploadedFileName = null;
+
+        document.getElementById('app-service-name').textContent = 
+            `Apply for ${serviceName}`;
+        document.getElementById('review-service').textContent = serviceName;
+        document.getElementById('review-fee').textContent = `₱${fee}`;
+    }
+
+    function startApplication(serviceId, serviceName, fee) {
+        initializeApplication(serviceId, serviceName, fee);
+        togglePage('application');
+    }
+
+    // Service Filtering
+    function filterServices() {
+        const searchQuery = document.getElementById('service-search').value.toLowerCase();
+        const priceFilter = document.getElementById('price-filter').value;
+        const serviceCards = document.querySelectorAll('.service-card');
+
+        serviceCards.forEach(card => {
+            const serviceName = card.getAttribute('data-name').toLowerCase();
+            const price = parseInt(card.getAttribute('data-price'));
+            let matches = true;
+
+            // Search filter
+            if (searchQuery && !serviceName.includes(searchQuery)) {
+                matches = false;
+            }
+
+            // Price filter
+            if (priceFilter === 'free' && price !== 0) {
+                matches = false;
+            } else if (priceFilter === 'paid' && price === 0) {
+                matches = false;
+            }
+
+            if (matches) {
+                card.classList.remove('hidden');
+            } else {
+                card.classList.add('hidden');
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
