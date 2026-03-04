@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> E-Government Login</title>
+    <meta name="viewport" content="width=device-width, inital-scale=1.0">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.coom"></script>
+    </head>
+    <body>
+    <!--  Login Page -->
+<section id= "login-page" class="min-h-screen flex bg-gray-50 pt-16">
+
+<!-- Left Side- Branding (Desktop Only)-->
+<div class="hidden Ig:flex Ig:w-2/5 bg- gradient-to-br from-blue-900 to blue-600 p-12 flex-col justify-center text-white">
+    <div class= "space-y-6">
+    
+      <!-- Logo -->
+        <div class= "w-20 h-20 bg-white rounded-2x1 flex items-center justify-center text-2x1">
+      </div>
+<h1 class= "text-4x1 font-bold mb-4">
+E-Government Citizen<br/>Services Portal
+</h1>
+<p class="text-x1 text-blue-100">
+    Access all government services in one secure platform.
+  </p>
+</div>
+<!-- Features-->
+<div class="space-y-4 pt-8">
+
+    <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-sm">
+          </div>
+<span>Secure authentication</span>
+  </div>
+    <div class="flex items-center gap-3">
+        <div class="w-8-h8 rounded-full bg-white/20 flex items-center justify-center text-sm">
+  </div>
+    <span> 24/7 access to services</span>
+</div>
+<div class="flex items-center gap-3">
+  <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-sm">
+</div>
+<span>Track your application</span>
+</div>
+  </div>
+</div>
+      </div>
+</section>
+</body>
+</html>
+
